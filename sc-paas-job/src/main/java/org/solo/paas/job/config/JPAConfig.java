@@ -25,7 +25,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
  */
 @Configuration
 @EnableTransactionManagement(proxyTargetClass=true)
-@EnableJpaRepositories(basePackages= {"com.accenture.microservice.data.repository","com.gmcc.icp.isp.job.repository"})
+@EnableJpaRepositories(basePackages= {"com.accenture.microservice.data.repository","org.solo.paas.job.repository"})
 @ComponentScan(basePackages="com.accenture.microservice.data.component",lazyInit=true)
 public class JPAConfig {
 	
@@ -35,9 +35,9 @@ public class JPAConfig {
 	@Bean
 	public DefaultPersistenceUnitManager persistenceUnitManager() throws SQLException{
 		DefaultPersistenceUnitManager persistenceUnitManager = new DefaultPersistenceUnitManager();
-        persistenceUnitManager.setDefaultPersistenceUnitName("ICP-ISP-JOB");
+        persistenceUnitManager.setDefaultPersistenceUnitName("SC-PAAS-JOB");
         persistenceUnitManager.setDefaultDataSource(dataSource);
-        persistenceUnitManager.setPackagesToScan("com.accenture.microservice.data.domain","com.gmcc.icp.isp.job.domain");
+        persistenceUnitManager.setPackagesToScan("com.accenture.microservice.data.domain","org.solo.paas.job.domain");
         return persistenceUnitManager;
 	}	
     

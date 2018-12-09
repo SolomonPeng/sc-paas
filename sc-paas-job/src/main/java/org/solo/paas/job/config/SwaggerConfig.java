@@ -54,9 +54,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("ICP-ISP-ERP")
-                .description("广东移动投资项目一体化ICP接口服务平台定时任务调度")
-                .termsOfServiceUrl("http://www.gmcc.com/")
+                .title("SC-PAAS-JOB")
+                .description("Spring Cloud PAAS JOB Module")
+                .termsOfServiceUrl("https://github.com/SolomonPeng/sc-paas")
                 .version("1.0")
                 .build();
     }
