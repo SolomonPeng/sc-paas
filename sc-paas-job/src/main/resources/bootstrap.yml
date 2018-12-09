@@ -1,0 +1,10 @@
+server:
+  port: @project.port@
+spring:
+  application:
+    name: @project.artifactId@
+  cloud:
+    config:
+      label: ${config.label}
+      uri: ${config.uri}
+      name: @config.names@
