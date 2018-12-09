@@ -1,3 +1,6 @@
 # sc-paas
 Spring Coud PAAS Application Demo
 该项目用于在建立新微服务项目时作为模板使用,所有的api\service\repository\domain层都做了标准化
+github源码内并未加上microservice框架代码和配置文件,且工程启动依赖的配置文件时通过spring cloud config service注入的。所以项目pull至本地后是无法启动成功的。
+
+*sc-paas-job* 项目为一个定时任务微服务，通过quartz和数据库实现定时任务持久化可配置，定时任务分两类：Task(定时启动的)和Cycle(只启动一次的轮询)，项目通过建立四张表:JOB_TASK_TRIGGER\JOB_TASK_RECORD\JOB_CYCLE_TRIGGER\JOB_CYCLE_RECORD通过JPA实现JOB的配置、执行结果保存以及自动关闭等功能。定时任务的实际实现由Feign调用其它微服务实现。
