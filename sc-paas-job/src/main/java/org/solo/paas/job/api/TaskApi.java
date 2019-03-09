@@ -14,6 +14,7 @@ import org.solo.paas.job.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,23 +48,25 @@ public class TaskApi extends BaseApi {
 	
 	@ApiOperation("根据id查询任务触发器")
     @GetMapping("/trigger/{ids}")
-    public Object getTriggerById(@PathVariable String[] ids) {
-		Assert.notEmpty(ids, Constant.MSG_EMPTY_COLLECTION);
-		if (ids.length <= 1) {
-			return taskService.findTriggerById(ids[0]);
+    public Object getTriggerById(@PathVariable String ids) {
+		String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+		if (id.length <= 1) {
+			return taskService.findTriggerById(id[0]);
 		}else {
-			return taskService.findTriggerByIds(Arrays.asList(ids));
+			return taskService.findTriggerByIds(Arrays.asList(id));
 		}
     }
 	
 	@ApiOperation("根据id查询任务记录")
     @GetMapping("/record/{ids}")
-    public Object getRecordById(@PathVariable String[] ids) {
-		Assert.notEmpty(ids, Constant.MSG_EMPTY_COLLECTION);
-		if (ids.length <= 1) {
-			return taskService.findRecordById(ids[0]);
+    public Object getRecordById(@PathVariable String ids) {
+		String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+		if (id.length <= 1) {
+			return taskService.findRecordById(id[0]);
 		}else {
-			return taskService.findRecordByIds(Arrays.asList(ids));
+			return taskService.findRecordByIds(Arrays.asList(id));
 		}
     }
 
@@ -221,20 +224,24 @@ public class TaskApi extends BaseApi {
 
     @ApiOperation("根据id删除任务触发器")
     @DeleteMapping("/trigger/{ids}")
-    public String deleteTriggerById(@PathVariable("ids") String[] ids) {
-        if (ids.length <= 1) {
-        	taskService.deleteTriggerById(ids[0]);
+    public String deleteTriggerById(@PathVariable String ids) {
+    	String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+    	if (id.length <= 1) {
+        	taskService.deleteTriggerById(id[0]);
         } else {
-        	taskService.deleteTriggerList(Arrays.asList(ids));
+        	taskService.deleteTriggerList(Arrays.asList(id));
         }
         return Constant.MSG_SUCCESS;
     }
     
     @ApiOperation("根据id删除任务记录")
     @DeleteMapping("/record/{ids}")
-    public String deleteRecordById(@PathVariable("ids") String[] ids) {
-        if (ids.length <= 1) {
-        	taskService.deleteRecordById(ids[0]);
+    public String deleteRecordById(@PathVariable String ids) {
+    	String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+    	if (id.length <= 1) {
+        	taskService.deleteRecordById(id[0]);
         } else {
         	taskService.deleteRecordList(Arrays.asList(ids));
         }

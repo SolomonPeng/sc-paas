@@ -14,6 +14,7 @@ import org.solo.paas.job.service.CycleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,23 +48,25 @@ public class CycleApi extends BaseApi {
 	
 	@ApiOperation("根据id查询轮询触发器")
     @GetMapping("/trigger/{ids}")
-    public Object getTriggerById(@PathVariable String[] ids) {
-		Assert.notEmpty(ids, Constant.MSG_EMPTY_COLLECTION);
-		if (ids.length <= 1) {
-			return cycleService.findTriggerById(ids[0]);
+    public Object getTriggerById(@PathVariable String ids) {
+		String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+		if (id.length <= 1) {
+			return cycleService.findTriggerById(id[0]);
 		}else {
-			return cycleService.findTriggerByIds(Arrays.asList(ids));
+			return cycleService.findTriggerByIds(Arrays.asList(id));
 		}
     }
 	
 	@ApiOperation("根据id查询轮询记录")
     @GetMapping("/record/{ids}")
-    public Object getRecordById(@PathVariable String[] ids) {
-		Assert.notEmpty(ids, Constant.MSG_EMPTY_COLLECTION);
-		if (ids.length <= 1) {
-			return cycleService.findRecordById(ids[0]);
+    public Object getRecordById(@PathVariable String ids) {
+		String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+		if (id.length <= 1) {
+			return cycleService.findRecordById(id[0]);
 		}else {
-			return cycleService.findRecordByIds(Arrays.asList(ids));
+			return cycleService.findRecordByIds(Arrays.asList(id));
 		}
     }
 
@@ -221,22 +224,26 @@ public class CycleApi extends BaseApi {
 
     @ApiOperation("根据id删除轮询触发器")
     @DeleteMapping("/trigger/{ids}")
-    public String deleteTriggerById(@PathVariable("ids") String[] ids) {
-        if (ids.length <= 1) {
-        	cycleService.deleteTriggerById(ids[0]);
+    public String deleteTriggerById(@PathVariable String ids) {
+    	String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+    	if (id.length <= 1) {
+        	cycleService.deleteTriggerById(id[0]);
         } else {
-        	cycleService.deleteTriggerList(Arrays.asList(ids));
+        	cycleService.deleteTriggerList(Arrays.asList(id));
         }
         return Constant.MSG_SUCCESS;
     }
     
     @ApiOperation("根据id删除轮询记录")
     @DeleteMapping("/record/{ids}")
-    public String deleteRecordById(@PathVariable("ids") String[] ids) {
-        if (ids.length <= 1) {
-        	cycleService.deleteRecordById(ids[0]);
+    public String deleteRecordById(@PathVariable String ids) {
+    	String[] id = StringUtils.commaDelimitedListToStringArray(ids);
+		Assert.notEmpty(id, Constant.MSG_EMPTY_COLLECTION);
+    	if (id.length <= 1) {
+        	cycleService.deleteRecordById(id[0]);
         } else {
-        	cycleService.deleteRecordList(Arrays.asList(ids));
+        	cycleService.deleteRecordList(Arrays.asList(id));
         }
         return Constant.MSG_SUCCESS;
     }

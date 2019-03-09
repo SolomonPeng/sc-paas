@@ -34,6 +34,7 @@ import com.accenture.microservice.core.util.CoreUtils;
 import com.accenture.microservice.core.util.DateUtils;
 import com.accenture.microservice.core.util.NumberUtils;
 import com.accenture.microservice.core.vo.ResponseResult;
+import com.accenture.microservice.data.base.AbstractService;
 import com.accenture.microservice.data.util.DataUtils;
 import com.google.common.collect.Lists;
 import com.querydsl.core.types.ExpressionUtils;
@@ -47,7 +48,7 @@ import lombok.NonNull;
  */
 @Service
 @CacheConfig(cacheNames = "paas-job-cycle")
-public class CycleService extends AbstractJobService {
+public class CycleService extends AbstractService {
 
 	@Autowired
 	CycleTriggerRepository triggerRepository;
@@ -235,7 +236,7 @@ public class CycleService extends AbstractJobService {
 		List<Predicate> predicates = Lists.newArrayList();
 		predicates.add(q.group.eq(group));
 		predicates.add(q.className.eq(className));		
-		return jpaQueryFactory.selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();		
+		return this.getJpaQueryFactory().selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();		
 	}
 		
 	/**根据cycleTrigger配置好的开始结束时间段和间隔,以及上次执行的轮询时间段,生成当前轮询时间段
@@ -267,7 +268,7 @@ public class CycleService extends AbstractJobService {
 		predicates.add(q.cycleTrigger.eq(cycleTrigger));
 		predicates.add(q.status.lt(Integer.valueOf(1)));
 		//recordRepository.findOne(ExpressionUtils.allOf(predicates));
-		return jpaQueryFactory.selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();
+		return this.getJpaQueryFactory().selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();
 	}
 	
 	/**根据trigger查找上一次成功的记录(where status=1 order by startTime desc)的startTime
@@ -279,7 +280,7 @@ public class CycleService extends AbstractJobService {
 		List<Predicate> predicates = Lists.newArrayList();		
 		predicates.add(q.cycleTrigger.eq(cycleTrigger));
 		predicates.add(q.status.eq(Integer.valueOf(1)));
-		CycleRecord rec = jpaQueryFactory.selectFrom(q).where(ExpressionUtils.allOf(predicates)).orderBy(q.startTime.desc()).fetchFirst();
+		CycleRecord rec = this.getJpaQueryFactory().selectFrom(q).where(ExpressionUtils.allOf(predicates)).orderBy(q.startTime.desc()).fetchFirst();
 		if(ObjectUtils.isEmpty(rec)) {
 			return null;
 		}

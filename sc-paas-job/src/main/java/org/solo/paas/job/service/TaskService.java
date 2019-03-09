@@ -33,6 +33,7 @@ import org.springframework.util.ObjectUtils;
 import com.accenture.microservice.core.util.CoreUtils;
 import com.accenture.microservice.core.util.NumberUtils;
 import com.accenture.microservice.core.vo.ResponseResult;
+import com.accenture.microservice.data.base.AbstractService;
 import com.accenture.microservice.data.util.DataUtils;
 import com.google.common.collect.Lists;
 import com.querydsl.core.types.ExpressionUtils;
@@ -46,7 +47,7 @@ import lombok.NonNull;
  */
 @Service
 @CacheConfig(cacheNames = "paas-job-task")
-public class TaskService extends AbstractJobService {
+public class TaskService extends AbstractService {
 
 	@Autowired
 	TaskTriggerRepository triggerRepository;
@@ -231,7 +232,7 @@ public class TaskService extends AbstractJobService {
 		List<Predicate> predicates = Lists.newArrayList();
 		predicates.add(q.group.eq(group));
 		predicates.add(q.className.eq(className));		
-		return jpaQueryFactory.selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();		
+		return this.getJpaQueryFactory().selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();		
 	}
 
 	/**根据trigger查找上一次运行失败的记录包括status<1的所有记录
@@ -244,7 +245,7 @@ public class TaskService extends AbstractJobService {
 		predicates.add(q.taskTrigger.eq(trigger));
 		predicates.add(q.status.lt(Integer.valueOf(1)));
 		//recordRepository.findOne(ExpressionUtils.allOf(predicates));
-		return jpaQueryFactory.selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();
+		return this.getJpaQueryFactory().selectFrom(q).where(ExpressionUtils.allOf(predicates)).fetchFirst();
 	}
 	
 	/**根据trigger查找上一次成功的记录(where status=1 order by startTime desc)的startTime
@@ -256,7 +257,7 @@ public class TaskService extends AbstractJobService {
 		List<Predicate> predicates = Lists.newArrayList();		
 		predicates.add(q.taskTrigger.eq(trigger));
 		predicates.add(q.status.eq(Integer.valueOf(1)));
-		TaskRecord rec = jpaQueryFactory.selectFrom(q).where(ExpressionUtils.allOf(predicates)).orderBy(q.startTime.desc()).fetchFirst();
+		TaskRecord rec = this.getJpaQueryFactory().selectFrom(q).where(ExpressionUtils.allOf(predicates)).orderBy(q.startTime.desc()).fetchFirst();
 		if(ObjectUtils.isEmpty(rec)) {
 			return null;
 		}
